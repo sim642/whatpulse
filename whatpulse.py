@@ -100,6 +100,13 @@ class TokenResetRequest(Request):
 			'client_token': client_token
 		})
 
+class StatusRequest(Request):
+	def __init__(self, client_token):
+		super().__init__('refresh_account_info')
+		self.add_members({
+			'client_token': client_token
+		})
+
 class PulseRequest(Request):
 	def __init__(self, client_token, token, stats):
 		super().__init__('pulse')
@@ -186,6 +193,18 @@ class TokenResetResponse(Response):
 			'token': 'token'
 		})
 
+class StatusResponse(Response):
+	def __init__(self, tree):
+		super().__init__(tree)
+		self.parse_members({
+			'username': 'username',
+			'computer': 'computer',
+			'email': 'email'
+		})
+
+		self.total = Stats.parse(self.tree, 'total')
+		self.rank = Stats.parse(self.tree, 'rank')
+
 class PulseResponse(Response):
 	def __init__(self, tree):
 		super().__init__(tree)
@@ -203,6 +222,7 @@ Response.types = {
 	'client_login': ClientLoginResponse,
 	'get_password_hash': PasswordResponse,
 	'resettoken': TokenResetResponse,
+	'refresh_account_info': StatusResponse,
 	'pulse': PulseResponse
 }
 
@@ -298,6 +318,17 @@ class Client(object):
 	def reset_token(self):
 		res = self.s.request(TokenResetRequest(self.client_token))
 		self.token = res.token
+
+		return res
+
+	def refresh(self):
+		res = self.s.request(StatusRequest(self.client_token))
+		self.username = res.username
+		self.computer = res.computer
+		self.email = res.email
+
+		self.total = res.total
+		self.rank = res.rank
 
 		return res
 

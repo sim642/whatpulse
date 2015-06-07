@@ -93,6 +93,13 @@ class PasswordRequest(Request):
 			'real_password': password
 		})
 
+class TokenResetRequest(Request):
+	def __init__(self, client_token):
+		super().__init__('resettoken')
+		self.add_members({
+			'client_token': client_token
+		})
+
 class PulseRequest(Request):
 	def __init__(self, client_token, token, stats):
 		super().__init__('pulse')
@@ -172,6 +179,13 @@ class PasswordResponse(Response):
 			'passwordhash': 'hash'
 		})
 
+class TokenResetResponse(Response):
+	def __init__(self, tree):
+		super().__init__(tree)
+		self.parse_members({
+			'token': 'token'
+		})
+
 class PulseResponse(Response):
 	def __init__(self, tree):
 		super().__init__(tree)
@@ -188,6 +202,7 @@ Response.types = {
 	'login': LoginResponse,
 	'client_login': ClientLoginResponse,
 	'get_password_hash': PasswordResponse,
+	'resettoken': TokenResetResponse,
 	'pulse': PulseResponse
 }
 
@@ -269,6 +284,20 @@ class Client(object):
 	def client_login(self):
 		res = self.s.request(ClientLoginRequest(self.userid, self.computerid, self.hash))
 		self.client_token = res.client_token
+
+		return res
+
+	def set_password(self, password):
+		self.password = password
+
+		res = self.s.request(PasswordRequest(self.client_token, self.password))
+		self.hash = res.hash
+
+		return res
+
+	def reset_token(self):
+		res = self.s.request(TokenResetRequest(self.client_token))
+		self.token = res.token
 
 		return res
 

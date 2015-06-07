@@ -4,7 +4,7 @@ from lxml.builder import E
 import re
 
 client_version = '2.6.1'
-type_os = 'linux'
+type_os = 'linux' # windows, linux, macos
 
 class Stats(object):
 	def __init__(self, keys=0, clicks=0, download=0, upload=0, uptime=0):
@@ -228,6 +228,55 @@ class Client(object):
 
 		self.email = None
 		self.password = None
+
 		self.hash = None
-		self.client_token = None
+		self.computers = None
+		self.computer = None
+
+		self.userid = None
+		self.computerid = None
 		self.token = None
+
+		self.client_token = None
+
+		self.total = None
+		self.rank = None
+
+	def try_login(self, email, password):
+		self.email = email
+		self.password = password
+
+		res = self.s.request(TryLoginRequest(self.email, self.password))
+		self.hash = res.hash
+		self.computers = res.computers
+
+		return res
+
+	def login(self, computer):
+		self.computer = computer
+
+		res = self.s.request(LoginRequest(self.email, self.hash, self.computer))
+		self.userid = res.userid
+		self.computerid = res.computerid
+		self.username = res.username
+		self.token = res.token
+
+		self.total = res.total
+		self.rank = res.rank
+
+		return res
+
+	def client_login(self):
+		res = self.s.request(ClientLoginRequest(self.userid, self.computerid, self.hash))
+		self.client_token = res.client_token
+
+		return res
+
+	def pulse(self, stats):
+		res = self.s.request(PulseRequest(self.client_token, self.token, stats))
+		self.token = res.token
+
+		self.total = res.total
+		self.rank = res.rank
+
+		return res

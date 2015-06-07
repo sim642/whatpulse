@@ -6,6 +6,40 @@ import re
 client_version = '2.6.1'
 type_os = 'linux'
 
+class Stats(object):
+	def __init__(self, keys=0, clicks=0, download=0, upload=0, uptime=0):
+		self.keys = keys
+		self.clicks = clicks
+		self.download = download
+		self.upload = upload
+		self.uptime = uptime
+
+	@staticmethod
+	def parse(tree, name):
+		ret = Stats()
+		for elem in tree:
+			if elem.tag.startswith(name):
+				key = elem.tag[len(name):]
+				value = elem.text
+				setattr(ret, key, value)
+		return ret
+
+	dump_map = {
+		'keys': 'keycount',
+		'clicks': 'clickcount',
+		'download': 'download',
+		'upload': 'upload',
+		'uptime': 'uptime'
+	}
+
+	def dump(self):
+		elems = []
+		for key, to in self.dump_map.items():
+			elem = etree.Element(to)
+			elem.text = str(getattr(self, key))
+			elems.append(elem)
+		return elems
+
 class Request(object):
 	def __init__(self, type):
 		self.tree = (
@@ -28,7 +62,6 @@ class ProxyTestRequest(Request):
 class TryLoginRequest(Request):
 	def __init__(self, email, password):
 		super().__init__('trylogin')
-
 		self.add_members({
 			'email': email,
 			'password': password
@@ -37,12 +70,38 @@ class TryLoginRequest(Request):
 class LoginRequest(Request):
 	def __init__(self, email, hash, computer):
 		super().__init__('login')
-
 		self.add_members({
 			'email': email,
 			'passwordhash': hash,
 			'computer': computer
 		})
+
+class ClientLoginRequest(Request):
+	def __init__(self, userid, computerid, hash):
+		super().__init__('client_login')
+		self.add_members({
+			'userid': userid,
+			'computerid': computerid,
+			'passwordhash': hash
+		})
+
+class PasswordRequest(Request):
+	def __init__(self, client_token, password):
+		super().__init__('get_password_hash')
+		self.add_members({
+			'client_token': client_token,
+			'real_password': password
+		})
+
+class PulseRequest(Request):
+	def __init__(self, client_token, token, stats):
+		super().__init__('pulse')
+		self.add_members({
+			'client_token': client_token,
+			'token': token
+		})
+		for elem in stats.dump():
+			self.tree.append(elem)
 
 class Response(object):
 	def __init__(self, tree):
@@ -84,8 +143,6 @@ class TryLoginResponse(Response):
 		self.computers = self.tree.xpath('./computers/computer/text()')
 
 class LoginResponse(Response):
-	p = re.compile('(total|rank)(\w+)')
-
 	def __init__(self, tree):
 		super().__init__(tree)
 		self.parse_members({
@@ -98,17 +155,40 @@ class LoginResponse(Response):
 			'passwordhash': 'hash'
 		})
 
-		self.total = {}
-		self.rank = {}
-		for elem in self.tree.xpath('./*'):
-			m = self.p.match(elem.tag)
-			if m:
-				{'total': self.total, 'rank': self.rank}[m.group(1)][m.group(2)] = elem.text # TODO: unuglify code
+		self.total = Stats.parse(self.tree, 'total')
+		self.rank = Stats.parse(self.tree, 'rank')
+
+class ClientLoginResponse(Response):
+	def __init__(self, tree):
+		super().__init__(tree)
+		self.parse_members({
+			'client_token': 'client_token'
+		})
+
+class PasswordResponse(Response):
+	def __init__(self, tree):
+		super().__init__(tree)
+		self.parse_members({
+			'passwordhash': 'hash'
+		})
+
+class PulseResponse(Response):
+	def __init__(self, tree):
+		super().__init__(tree)
+		self.parse_members({
+			'token': 'token'
+		})
+
+		self.total = Stats.parse(self.tree, 'total')
+		self.rank = Stats.parse(self.tree, 'rank')
 
 Response.types = {
 	'testproxy': ProxyTestResponse,
 	'trylogin': TryLoginResponse,
-	'login': LoginResponse
+	'login': LoginResponse,
+	'client_login': ClientLoginResponse,
+	'get_password_hash': PasswordResponse,
+	'pulse': PulseResponse
 }
 
 class Session(object):
@@ -142,4 +222,12 @@ class Session(object):
 	def request(self, req):
 		return self.requests([req])[0]
 
+class Client(object):
+	def __init__(self):
+		self.s = Session()
 
+		self.email = None
+		self.password = None
+		self.hash = None
+		self.client_token = None
+		self.token = None

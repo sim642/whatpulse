@@ -1,7 +1,7 @@
 import requests
 from lxml import etree
 from lxml.builder import E
-import re
+import datetime
 
 client_version = '2.6.1'
 type_os = 'linux' # windows, linux, macos
@@ -20,7 +20,7 @@ class Stats(object):
 		for elem in tree:
 			if elem.tag.startswith(name):
 				key = elem.tag[len(name):]
-				value = elem.text
+				value = int(elem.text)
 				setattr(ret, key, value)
 		return ret
 
@@ -126,7 +126,8 @@ class Response(object):
 		})
 
 	def get(self, xpath):
-		return self.tree.xpath(xpath)[0]
+		elems = self.tree.xpath(xpath)
+		return elems[0] if len(elems) > 0 else None
 
 	def parse_members(self, members):
 		for key, value in members.items():
@@ -172,6 +173,12 @@ class LoginResponse(Response):
 		self.total = Stats.parse(self.tree, 'total')
 		self.rank = Stats.parse(self.tree, 'rank')
 
+		premium = self.get('./premium_expire/text()')
+		if premium is not None:
+			self.premium = datetime.datetime.strptime(premium, '%Y-%m-%d').date()
+		else:
+			self.premium = False
+
 class ClientLoginResponse(Response):
 	def __init__(self, tree):
 		super().__init__(tree)
@@ -204,6 +211,12 @@ class StatusResponse(Response):
 
 		self.total = Stats.parse(self.tree, 'total')
 		self.rank = Stats.parse(self.tree, 'rank')
+
+		premium = self.get('./premium_expire/text()')
+		if premium is not None:
+			self.premium = datetime.datetime.strptime(premium, '%Y-%m-%d').date()
+		else:
+			self.premium = False
 
 class PulseResponse(Response):
 	def __init__(self, tree):
@@ -298,6 +311,7 @@ class Client(object):
 
 		self.total = res.total
 		self.rank = res.rank
+		self.premium = res.premium
 
 		return res
 
@@ -329,6 +343,7 @@ class Client(object):
 
 		self.total = res.total
 		self.rank = res.rank
+		self.premium = res.premium
 
 		return res
 

@@ -40,15 +40,20 @@ while True:
 
 	# handle interfaces
 	cur_bytes = bytes(interfaces)
-	diff_bytes = {}
 	for interface in interfaces:
-		diff_bytes[interface] = {
+		diff = {
 			'rx': cur_bytes[interface]['rx'] - prev_bytes[interface]['rx'],
 			'tx': cur_bytes[interface]['tx'] - prev_bytes[interface]['tx']
 		}
 
-		total_bytes['rx'] += diff_bytes[interface]['rx']
-		total_bytes['tx'] += diff_bytes[interface]['tx']
+		# handle stat counter reset
+		if diff['rx'] < 0:
+			diff['rx'] += pow(2, 32)
+		if diff['tx'] < 0:
+			diff['tx'] += pow(2, 32)
+
+		total_bytes['rx'] += diff['rx']
+		total_bytes['tx'] += diff['tx']
 
 	prev_bytes = cur_bytes
 

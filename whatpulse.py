@@ -145,7 +145,7 @@ class Response(object):
 	@classmethod
 	def parse(cls, tree):
 		type = tree.get('type')
-		print(etree.tostring(tree), type)
+		#print(etree.tostring(tree), type)
 		return cls.types.get(type, Response)(tree)
 
 

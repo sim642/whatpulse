@@ -68,12 +68,31 @@ def start():
 	global prev_time
 	prev_time = time.time()
 
-def pulse(signum, frame):
+def pulse(signum=None, frame=None):
 	stats = whatpulse.Stats(keys=keys, clicks=clicks, download=round(total_bytes['rx'] / pow(BYTE_BASE, 2)), upload=round(total_bytes['tx'] / pow(BYTE_BASE, 2)), uptime=round(total_time))
 
 	wp.client_login()
 	wp.pulse(stats)
 	reset_stats()
+
+def autopulse():
+	for key, cond in config['pulse'].items():
+		value = None
+		if key == 'keys':
+			value = keys
+		elif key == 'clicks':
+			value = clicks
+		elif key == 'download':
+			value = round(total_bytes['rx'] / pow(BYTE_BASE, 2))
+		elif key == 'upload':
+			value = round(total_bytes['tx'] / pow(BYTE_BASE, 2))
+		elif key == 'uptime':
+			value = total_time / (60 * 60)
+
+		if value >= int(cond):
+			pulse()
+			break
+
 
 def main_loop():
 	# handle inputs
@@ -109,10 +128,13 @@ def main_loop():
 
 	prev_bytes = cur_bytes
 
+	# handle time
 	global prev_time, total_time
 	cur_time = time.time()
 	total_time += cur_time - prev_time
 	prev_time = cur_time
+
+	autopulse()
 
 def cleanup(signum, frame):
 	pass

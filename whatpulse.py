@@ -14,6 +14,15 @@ class Stats(object):
 		self.upload = upload
 		self.uptime = uptime
 
+	def __repr__(self):
+		return repr({
+			'keys': self.keys,
+			'clicks': self.clicks,
+			'download': self.download,
+			'upload': self.upload,
+			'uptime': self.uptime
+		})
+
 	@staticmethod
 	def parse(tree, name):
 		ret = Stats()

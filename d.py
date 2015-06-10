@@ -5,7 +5,7 @@ from evdev import KeyEvent, ecodes
 import selectors
 import time
 
-BYTE_BASE = 1000
+BYTE_BASE = 1024
 
 config = configparser.ConfigParser(allow_no_value=True)
 config_file = open('d.conf', 'r')

@@ -4,6 +4,7 @@ from ev2 import ReadInputDevice
 from evdev import KeyEvent, ecodes
 import selectors
 import time
+import converter
 
 BYTE_BASE = 1024
 
@@ -80,16 +81,21 @@ def autopulse():
 		value = None
 		if key == 'keys':
 			value = keys
+			cond = converter.general(cond)
 		elif key == 'clicks':
 			value = clicks
+			cond = converter.general(cond)
 		elif key == 'download':
-			value = round(total_bytes['rx'] / pow(BYTE_BASE, 2))
+			value = total_bytes['rx']
+			cond = converter.size(cond)
 		elif key == 'upload':
-			value = round(total_bytes['tx'] / pow(BYTE_BASE, 2))
+			value = total_bytes['tx']
+			cond = converter.size(cond)
 		elif key == 'uptime':
-			value = total_time / (60 * 60)
+			value = total_time
+			cond = converter.time(cond)
 
-		if value >= int(cond):
+		if value >= cond:
 			pulse()
 			break
 

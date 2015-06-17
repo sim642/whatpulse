@@ -8,6 +8,9 @@ import converter
 
 BYTE_BASE = 1024
 
+stdout_file = open('stdout.log', 'w+')
+stderr_file = open('stderr.log', 'w+')
+
 config = configparser.ConfigParser(allow_no_value=True)
 config_file = open('d.conf', 'r')
 
@@ -148,7 +151,9 @@ def cleanup(signum, frame):
 context = daemon.DaemonContext(
 	working_directory='.',
 	detach_process=False,
-	files_preserve=[config_file]
+	files_preserve=[config_file],
+	stdout=stdout_file,
+	stderr=stderr_file
 )
 
 context.signal_map = {

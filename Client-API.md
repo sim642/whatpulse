@@ -53,5 +53,101 @@ Used by the official client to test whether proxy works. Suitable request to tes
 
 Request tags: *none*
 
-Response tags: 
-* `<msg>` - useless status text
+Response tags:
+* `<msg>` - status text
+
+
+## trylogin
+*TODO*
+
+Request tags:
+* `<email>`
+* `<password>`
+
+Response tags:
+* `<trylogin_result>` - status text
+* `<passwordhash>`
+* `<computers>` - contains single `<computer>` tags with already existing computer names on the account
+
+
+## login
+*TODO*
+
+Request tags:
+* `<email>`
+* `<passwordhash>`
+* `<computer>`
+
+Response tags:
+* `<email>`
+* `<username>`
+* `<userid>`
+* `<computer>`
+* `<computerid>`
+* `<token>`
+* `<passwordhash>`
+* `<totalkeys>`, `<totalclicks>`, `<totaldownload>`, `<totalupload>`, `<totaluptime>` - *TODO*
+* `<rankkeys>`, `<rankclicks>`, `<rankdownload>`, `<rankupload>`, `<rankuptime>` - *TODO*
+* `<premium>`, `<premium_expire>` - *TODO*
+
+
+## client_login
+*TODO*
+
+Request tags:
+* `<userid>`
+* `<computerid>`
+* `<passwordhash>`
+
+Response tags:
+* `<client_token>`
+
+
+## get_password_hash
+*TODO*
+
+Request tags:
+* `<client_token>`
+* `<real_password>` - new password
+
+Response tags:
+* `<passwordhash>`
+
+
+## resettoken
+*TODO*
+
+Request tags:
+* `<client_token>`
+
+Response tags:
+* `<token>`
+
+
+## refresh_account_info
+*TODO*
+
+Request tags:
+* `<client_token>`
+
+Response tags:
+* `<email>`
+* `<username>`
+* `<computer>`
+* `<totalkeys>`, `<totalclicks>`, `<totaldownload>`, `<totalupload>`, `<totaluptime>` - *TODO*
+* `<rankkeys>`, `<rankclicks>`, `<rankdownload>`, `<rankupload>`, `<rankuptime>` - *TODO*
+* `<premium>`, `<premium_expire>` - *TODO*
+
+
+## pulse
+*TODO*
+
+Request tags:
+* `<client_token>`
+* `<token>`
+* `<keycount>`, `<clickcount>`, `<download>`, `<upload>`, `<uptime>` - *TODO*
+
+Response tags:
+* `<token>`
+* `<totalkeys>`, `<totalclicks>`, `<totaldownload>`, `<totalupload>`, `<totaluptime>` - *TODO*
+* `<rankkeys>`, `<rankclicks>`, `<rankdownload>`, `<rankupload>`, `<rankuptime>` - *TODO*

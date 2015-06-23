@@ -5,6 +5,7 @@ from evdev import KeyEvent, ecodes
 import selectors
 import time
 import converter
+import requests
 
 BYTE_BASE = 1024
 
@@ -75,9 +76,12 @@ def start():
 def pulse(signum=None, frame=None):
 	stats = whatpulse.Stats(keys=keys, clicks=clicks, download=round(total_bytes['rx'] / pow(BYTE_BASE, 2)), upload=round(total_bytes['tx'] / pow(BYTE_BASE, 2)), uptime=round(total_time))
 
-	wp.client_login()
-	wp.pulse(stats)
-	reset_stats()
+	try:
+		wp.client_login()
+		wp.pulse(stats)
+		reset_stats()
+	except requests.exceptions.ConnectionError as e:
+		pass # TODO: retry pulse
 
 def autopulse():
 	for key, cond in config['pulse'].items():
@@ -128,7 +132,7 @@ def main_loop():
 
 		# handle stat counter reset
 		if diff['rx'] < 0:
-			diff['rx'] += pow(2, 32)
+			diff['rx'] += pow(2, 32) # is rollever always at 2^32?
 		if diff['tx'] < 0:
 			diff['tx'] += pow(2, 32)
 

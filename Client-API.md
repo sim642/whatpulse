@@ -45,7 +45,16 @@ Each `<response>` block comes with a `type` attribute. It always seems to also c
 In addition, there may be more tags specific to the response type being used. Details for every type are described below.
 
 # Terminology
-*TODO*
+The following section of types uses following tags repeatedly:
+* `<email>` - account email, used for initial login with `trylogin`
+* `<password>` - account password in plaintext
+* `<passwordhash>` - hashed account password
+* `<username>` - account name, only used on Whatpulse website
+* `<userid>` - account id, used to get `<client_token>`
+* `<computer>` - computer name, may be one from `trylogin`'s `<computers>` or a new one
+* `<computerid>` - computer id, used to get `<client_token>`
+* `<token>` - token to be passed when pulsing, initially returned on `login`, each `pulse` request returns the token to be used for next pulse
+* `<client_token>` - temporary token identifying the client, due to short lifetime it should be requested with `client_login` right before use
 
 # Types
 The following titles are types of requests which can be made and their respective responses use the same type. Under each type additional request and response tags are described.
@@ -155,3 +164,13 @@ Response tags:
 * `<token>`
 * `<totalkeys>`, `<totalclicks>`, `<totaldownload>`, `<totalupload>`, `<totaluptime>` - account total counts
 * `<rankkeys>`, `<rankclicks>`, `<rankdownload>`, `<rankupload>`, `<rankuptime>` - account global ranks
+
+
+# Procedure
+The procedure to for requests and act like a Whatpulse client is the following:
+1. `trylogin` - returns `<passwordhash>` to avoid future use of plaintext `<password>` and also list of computers
+2. `login` - returns `<userid>`, `<computerid>` (required for `client_login`) and `<token>` (required for `pulse`)
+3. `client_login` - returns `<client_token>` (required for `pulse`)
+4. `pulse` - returns next `<token>`
+
+After `login` the returned details can be stored and reused whenever without needing to go through the actual login procedure, so for future pulsing only steps 3. and 4. will be needed.

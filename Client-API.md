@@ -48,6 +48,8 @@ In addition, there may be more tags specific to the response type being used. De
 *TODO*
 
 # Types
+The following titles are types of requests which can be made and their respective responses use the same type. Under each type additional request and response tags are described.
+
 ## testproxy
 Used by the official client to test whether proxy works. Suitable request to test basic querying.
 
@@ -58,7 +60,7 @@ Response tags:
 
 
 ## trylogin
-*TODO*
+Initial login on a computer. Returns the list of already existing computers on the account.
 
 Request tags:
 * `<email>`
@@ -67,11 +69,11 @@ Request tags:
 Response tags:
 * `<trylogin_result>` - status text
 * `<passwordhash>`
-* `<computers>` - contains single `<computer>` tags with already existing computer names on the account
+* `<computers>` - contains single `<computer>` tags
 
 
 ## login
-*TODO*
+Actual login as a computer.
 
 Request tags:
 * `<email>`
@@ -86,13 +88,14 @@ Response tags:
 * `<computerid>`
 * `<token>`
 * `<passwordhash>`
-* `<totalkeys>`, `<totalclicks>`, `<totaldownload>`, `<totalupload>`, `<totaluptime>` - *TODO*
-* `<rankkeys>`, `<rankclicks>`, `<rankdownload>`, `<rankupload>`, `<rankuptime>` - *TODO*
-* `<premium>`, `<premium_expire>` - *TODO*
+* `<totalkeys>`, `<totalclicks>`, `<totaldownload>`, `<totalupload>`, `<totaluptime>` - account total counts
+* `<rankkeys>`, `<rankclicks>`, `<rankdownload>`, `<rankupload>`, `<rankuptime>` - account global ranks
+* `<premium>` - `1` if account has premium
+  - `<premium_expire>` - date of account's premium expiry in `YYYY-mm-dd` format
 
 
 ## client_login
-*TODO*
+Quick login to get `<client_token>` to use with other requests.
 
 Request tags:
 * `<userid>`
@@ -104,7 +107,7 @@ Response tags:
 
 
 ## get_password_hash
-*TODO*
+Change account password.
 
 Request tags:
 * `<client_token>`
@@ -115,7 +118,7 @@ Response tags:
 
 
 ## resettoken
-*TODO*
+Returns a new `<token>`.
 
 Request tags:
 * `<client_token>`
@@ -125,7 +128,7 @@ Response tags:
 
 
 ## refresh_account_info
-*TODO*
+Returns account information.
 
 Request tags:
 * `<client_token>`
@@ -134,20 +137,21 @@ Response tags:
 * `<email>`
 * `<username>`
 * `<computer>`
-* `<totalkeys>`, `<totalclicks>`, `<totaldownload>`, `<totalupload>`, `<totaluptime>` - *TODO*
-* `<rankkeys>`, `<rankclicks>`, `<rankdownload>`, `<rankupload>`, `<rankuptime>` - *TODO*
-* `<premium>`, `<premium_expire>` - *TODO*
+* `<totalkeys>`, `<totalclicks>`, `<totaldownload>`, `<totalupload>`, `<totaluptime>` - account total counts
+* `<rankkeys>`, `<rankclicks>`, `<rankdownload>`, `<rankupload>`, `<rankuptime>` - account global ranks
+* `<premium>` - `1` if account has premium
+  - `<premium_expire>` - date of account's premium expiry in `YYYY-mm-dd` format
 
 
 ## pulse
-*TODO*
+Makes a pulse.
 
 Request tags:
 * `<client_token>`
 * `<token>`
-* `<keycount>`, `<clickcount>`, `<download>`, `<upload>`, `<uptime>` - *TODO*
+* `<keycount>`, `<clickcount>`, `<download>`, `<upload>`, `<uptime>` - counts to be pulsed
 
 Response tags:
 * `<token>`
-* `<totalkeys>`, `<totalclicks>`, `<totaldownload>`, `<totalupload>`, `<totaluptime>` - *TODO*
-* `<rankkeys>`, `<rankclicks>`, `<rankdownload>`, `<rankupload>`, `<rankuptime>` - *TODO*
+* `<totalkeys>`, `<totalclicks>`, `<totaldownload>`, `<totalupload>`, `<totaluptime>` - account total counts
+* `<rankkeys>`, `<rankclicks>`, `<rankdownload>`, `<rankupload>`, `<rankuptime>` - account global ranks

@@ -168,6 +168,7 @@ Response tags:
 
 # Procedure
 The procedure to for requests and act like a Whatpulse client is the following:
+
 1. `trylogin` - returns `<passwordhash>` to avoid future use of plaintext `<password>` and also list of computers
 2. `login` - returns `<userid>`, `<computerid>` (required for `client_login`) and `<token>` (required for `pulse`)
 3. `client_login` - returns `<client_token>` (required for `pulse`)

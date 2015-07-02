@@ -6,6 +6,8 @@ import selectors
 import time
 import converter
 import requests
+import json
+import sys
 
 BYTE_BASE = 1024
 
@@ -13,34 +15,12 @@ stdout_file = open('stdout.log', 'w+')
 stderr_file = open('stderr.log', 'w+')
 
 config = configparser.ConfigParser(allow_no_value=True)
-config_file = open('d.conf', 'r')
 
 inputs = []
 interfaces = []
 
-#selector = selectors.DefaultSelector()
 selector = None
 wp = whatpulse.Client()
-
-def setup():
-	global inputs, interfaces
-	config.read_file(config_file)
-
-	inputs = list(config['inputs'])
-	interfaces = list(config['interfaces'])
-
-
-	wp.try_login(config['login']['email'], config['login']['password'])
-	wp.login(config['login']['computer'])
-
-def get_bytes():
-	bytes = {}
-	for interface in interfaces:
-		bytes[interface] = {
-			'rx': int(open('/sys/class/net/' + interface + '/statistics/rx_bytes').read()),
-			'tx': int(open('/sys/class/net/' + interface + '/statistics/tx_bytes').read())
-		}
-	return bytes
 
 keys = None
 clicks = None
@@ -51,14 +31,50 @@ prev_time = None
 
 def reset_stats():
 	global keys, clicks, total_bytes, total_time
-	keys = 0;
-	clicks = 0;
+	keys = 0
+	clicks = 0
 	total_bytes = {'rx': 0, 'tx': 0}
 	total_time = 0
 
-def start():
+def setup():
+	global inputs, interfaces, keys, clicks, total_bytes, total_time
+	config_file = open('d.conf', 'r')
+	config.read_file(config_file)
+
 	reset_stats()
 
+	try:
+		state_file = open('d.json', 'r')
+		state = json.load(state_file)
+
+		# TODO: load more state to be sure
+		wp.userid = state['login']['userid']
+		wp.computerid = state['login']['computerid']
+		wp.hash = state['login']['hash']
+		wp.token = state['login']['token']
+
+		keys = state['stats']['keys']
+		clicks = state['stats']['clicks']
+		total_bytes['rx'] = state['stats']['download']
+		total_bytes['tx'] = state['stats']['upload']
+		total_time = state['stats']['uptime']
+	except FileNotFoundError: # empty state
+		wp.try_login(config['login']['email'], config['login']['password'])
+		wp.login(config['login']['computer'])
+
+	inputs = list(config['inputs'])
+	interfaces = list(config['interfaces'])
+
+def get_bytes():
+	bytes = {}
+	for interface in interfaces:
+		bytes[interface] = {
+			'rx': int(open('/sys/class/net/' + interface + '/statistics/rx_bytes').read()),
+			'tx': int(open('/sys/class/net/' + interface + '/statistics/tx_bytes').read())
+		}
+	return bytes
+
+def start():
 	# start inputs
 	global selector
 	selector = selectors.DefaultSelector()
@@ -150,12 +166,29 @@ def main_loop():
 	autopulse()
 
 def cleanup(signum, frame):
-	pass
+	state_file = open('d.json', 'w')
+	state = {
+		'login': {
+			'userid': wp.userid,
+			'computerid': wp.computerid,
+			'hash': wp.hash,
+			'token': wp.token
+		},
+		'stats': {
+			'keys': keys,
+			'clicks': clicks,
+			'download': total_bytes['rx'],
+			'upload': total_bytes['tx'],
+			'uptime': total_time
+		}
+	}
+	json.dump(state, state_file)
+
+	sys.exit(0)
 
 context = daemon.DaemonContext(
 	working_directory='.',
 	detach_process=False,
-	files_preserve=[config_file],
 	stdout=stdout_file,
 	stderr=stderr_file
 )

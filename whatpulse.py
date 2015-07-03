@@ -221,7 +221,7 @@ class StatusResponse(Response):
 		self.total = Stats.parse(self.tree, 'total')
 		self.rank = Stats.parse(self.tree, 'rank')
 
-		premium = self.get('./premium_expire/text()')
+		premium = self.get('./premium_expire/text()') # does unlimited premium exist?
 		if premium is not None:
 			self.premium = datetime.datetime.strptime(premium, '%Y-%m-%d').date()
 		else:

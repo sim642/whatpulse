@@ -53,6 +53,9 @@ def setup():
 		wp.hash = state['login']['hash']
 		wp.token = state['login']['token']
 
+		wp.client_login()
+		wp.refresh()
+
 		keys = state['stats']['keys']
 		clicks = state['stats']['clicks']
 		total_bytes['rx'] = state['stats']['download']

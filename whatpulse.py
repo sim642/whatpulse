@@ -102,6 +102,14 @@ class PasswordRequest(Request):
 			'real_password': password
 		})
 
+class ComputerIDRequest(Request):
+	def __init__(self, userid, computer):
+		super().__init__('get_computer_id')
+		self.add_members({
+			'userid': userid,
+			'computer': computer
+		})
+
 class TokenResetRequest(Request):
 	def __init__(self, client_token):
 		super().__init__('resettoken')
@@ -112,6 +120,13 @@ class TokenResetRequest(Request):
 class StatusRequest(Request):
 	def __init__(self, client_token):
 		super().__init__('refresh_account_info')
+		self.add_members({
+			'client_token': client_token
+		})
+
+class PremiumCheckRequest(Request):
+	def __init__(self, client_token):
+		super().__init__('check_premium')
 		self.add_members({
 			'client_token': client_token
 		})
@@ -202,6 +217,13 @@ class PasswordResponse(Response):
 			'passwordhash': 'hash'
 		})
 
+class ComputerIDResponse(Response):
+	def __init__(self, tree):
+		super().__init__(tree)
+		self.parse_members({
+			'computerid': 'computerid'
+		})
+
 class TokenResetResponse(Response):
 	def __init__(self, tree):
 		super().__init__(tree)
@@ -227,6 +249,15 @@ class StatusResponse(Response):
 		else:
 			self.premium = False
 
+class PremiumCheckResponse(Response):
+	def __init__(self, tree):
+		super().__init__(tree)
+		premium = self.get('./premium_expire/text()')
+		if premium is not None:
+			self.premium = datetime.datetime.strptime(premium, '%Y-%m-%d').date()
+		else:
+			self.premium = False
+
 class PulseResponse(Response):
 	def __init__(self, tree):
 		super().__init__(tree)
@@ -243,8 +274,10 @@ Response.types = {
 	'login': LoginResponse,
 	'client_login': ClientLoginResponse,
 	'get_password_hash': PasswordResponse,
+	'get_computer_id': ComputerIDResponse,
 	'resettoken': TokenResetResponse,
 	'refresh_account_info': StatusResponse,
+	'check_premium': PremiumCheckResponse,
 	'pulse': PulseResponse
 }
 

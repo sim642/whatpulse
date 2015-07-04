@@ -126,6 +126,17 @@ Response tags:
 * `<passwordhash>`
 
 
+## get_computer_id
+Returns `<computerid>` by `<computer>` name.
+
+Request tags:
+* `<userid>`
+* `<computer>`
+
+Response tags:
+* `<computerid>`
+
+
 ## resettoken
 Returns a new `<token>`.
 
@@ -148,6 +159,17 @@ Response tags:
 * `<computer>`
 * `<totalkeys>`, `<totalclicks>`, `<totaldownload>`, `<totalupload>`, `<totaluptime>` - account total counts
 * `<rankkeys>`, `<rankclicks>`, `<rankdownload>`, `<rankupload>`, `<rankuptime>` - account global ranks
+* `<premium>` - `1` if account has premium
+  - `<premium_expire>` - date of account's premium expiry in `YYYY-mm-dd` format
+
+
+## check_premium
+Checks premium status.
+
+Request tags:
+* `<client_token>`
+
+Response tags:
 * `<premium>` - `1` if account has premium
   - `<premium_expire>` - date of account's premium expiry in `YYYY-mm-dd` format
 

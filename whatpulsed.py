@@ -1,7 +1,6 @@
 import daemon, signal
 import configparser, whatpulse
-from ev2 import ReadInputDevice
-from evdev import KeyEvent, ecodes
+from evdev import InputDevice, KeyEvent, ecodes
 import selectors
 import time
 import converter
@@ -87,7 +86,7 @@ def start():
 	global selector
 	selector = selectors.DefaultSelector()
 	for input in inputs:
-		input = ReadInputDevice(input)
+		input = InputDevice(input)
 		selector.register(input, selectors.EVENT_READ)
 
 	# start interfaces

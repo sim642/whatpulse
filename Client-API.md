@@ -199,7 +199,7 @@ Request tags:
 Response tags: *none*
 
 ### Form field
-`keyboard_heatmap` - JSON object in the format:
+`keyboard_heatmap` - serialized JSON object in the format:
 ```json
 {
     "YYYY-mm-dd hh": {
@@ -225,7 +225,7 @@ Request tags:
 Response tags: *none*
 
 ### Form field
-`buttons_heatmap` - JSON object in the format:
+`buttons_heatmap` - serialized JSON object in the format:
 ```json
 {
     "YYYY-mm-dd hh": {
@@ -240,6 +240,45 @@ where:
   - `hh` - hour without padding, i.e. from `0` to `23`
 * `button` - mouse button code, likely from http://doc.qt.io/qt-4.8/qt.html#MouseButton-enum
 * `count` - count for button, *NB! JSON string*
+
+
+## upload_computerinfo
+Uploads computer specs to website.
+
+Request tags:
+* `<client_token>`
+
+Response tags: *none*
+
+### Form field
+`computer_info` - JSON object in the format:
+```json
+{
+    "VideoInfo": "NVIDIA GeForce GT 440",
+    "TrackpadInfo": "{}",
+    "NetworkInfo": "{\"isNetworkMonitorSupported\":{\"isNetworkMonitorSupported\":\"true\"}}",
+    "CPUInfo": "Intel Core i5-2310",
+    "ComputerModel": "",
+    "ComputerOS": "Arch Linux",
+    "ComputerPlatform": "x86_64\n",
+    "KeyboardInfo": "{}",
+    "MemoryInfo": "5955",
+    "MonitorInfo": "{\"0\":{\"height\":\"1080\",\"id\":\"0\",\"width\":\"1920\"},\"1\":{\"height\":\"1024\",\"id\":\"1\",\"width\":\"1280\"}}",
+    "MouseInfo": "{}"
+}
+```
+where:
+* `VideoInfo` - GPU name
+* `TrackpadInfo` - serialized JSON object in unknown format, usually `{}`
+* `NetworkInfo` - serialized JSON object in the following format: *TODO*
+* `CPUInfo` - CPU name
+* `ComputerModel` - computer model name, usually empty
+* `ComputerOS` - operating system name
+* `ComputerPlatform` - computer platform identifier, ends with `\n`, usually `i686\n` or `x86_64\n`
+* `KeyboardInfo` - serialized JSON object in unknown format, usually `{}`
+* `MemoryInfo` - RAM amount in bytes
+* `MonitorInfo` - serialized JSON object in the following format: *TODO*
+* `MouseInfo` - serialized JSON object in unknown format, usually `{}`
 
 
 # Procedure

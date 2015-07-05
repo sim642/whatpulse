@@ -267,17 +267,53 @@ Response tags: *none*
     "MouseInfo": "{}"
 }
 ```
-where:
+where the values are:
 * `VideoInfo` - GPU name
 * `TrackpadInfo` - serialized JSON object in unknown format, usually `{}`
-* `NetworkInfo` - serialized JSON object in the following format: *TODO*
+* `NetworkInfo` - serialized JSON object in the following format:
+
+    ```json
+    {
+        "isNetworkMonitorSupported":
+        {
+            "isNetworkMonitorSupported": "true"
+        },
+        
+        "Intel 82540EM Gigabit":
+        {
+            "is_wifi": "false",
+            "description": "Intel 82540EM Gigabit"
+        },
+        ...
+    }
+    ```
+    where network cards as keys have values:
+    - `is_wifi` - network card Wi-Fi ability
+    - `description` - network card name, same as key
+
 * `CPUInfo` - CPU name
 * `ComputerModel` - computer model name, usually empty
 * `ComputerOS` - operating system name
 * `ComputerPlatform` - computer platform identifier, ends with `\n`, usually `i686\n` or `x86_64\n`
 * `KeyboardInfo` - serialized JSON object in unknown format, usually `{}`
 * `MemoryInfo` - RAM amount in bytes
-* `MonitorInfo` - serialized JSON object in the following format: *TODO*
+* `MonitorInfo` - serialized JSON object in the following format:
+
+    ```json
+    {
+        "0":
+        {
+            "id": "0",
+            "width": "1920",
+            "height": "1080",
+        },
+        ...
+    }
+    ```
+    where monitor IDs as keys have values:
+    - `id` - monitor ID, same as key
+    - `width` - monitor width
+    - `height` - monitor height
 * `MouseInfo` - serialized JSON object in unknown format, usually `{}`
 
 

@@ -290,7 +290,6 @@ where the values are:
     where network cards as keys have values:
     - `is_wifi` - network card Wi-Fi ability
     - `description` - network card name, same as key
-
 * `CPUInfo` - CPU name
 * `ComputerModel` - computer model name, usually empty
 * `ComputerOS` - operating system name

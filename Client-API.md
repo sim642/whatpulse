@@ -3,6 +3,8 @@ Whatpulse client API endpoint is https://client.whatpulse.org/v1.1/. All request
 * `client_version` - client version number, e.g. `2.6.1`
 * `xml` - requests in XML format as described below
 
+*NB! Some request types may use additional form fields. Detailed descriptions under specific request types below.*
+
 To stay under the radar, it is recommended to do all queries over HTTPS and use a legitimate `client_version`. In addition `User-Agent` header should be `WhatPulse Client <client_version>` to imitate official Whatpulse client behavior as closely as possible.
 
 The response to the query is also in XML in the format described below.
@@ -186,6 +188,58 @@ Response tags:
 * `<token>`
 * `<totalkeys>`, `<totalclicks>`, `<totaldownload>`, `<totalupload>`, `<totaluptime>` - account total counts
 * `<rankkeys>`, `<rankclicks>`, `<rankdownload>`, `<rankupload>`, `<rankuptime>` - account global ranks
+
+
+## upload_heatmap_keyboard
+Premium user request to upload keyboard heatmap to website.
+
+Request tags:
+* `<client_token>`
+
+Response tags: *none*
+
+### Form field
+`keyboard_heatmap` - JSON object in the format:
+```json
+{
+    "YYYY-mm-dd hh": {
+        "key": "count",
+        ...
+    },
+    ...
+}
+```
+where:
+* `YYYY-mm-dd hh` - timestamp of the hourly block of keycounts
+  - `hh` - hour without padding, i.e. from `0` to `23`
+* `key` - key code, likely from http://doc.qt.io/qt-4.8/qt.html#Key-enum
+* `count` - count for key, *NB! JSON string*
+
+
+## upload_heatmap_buttons
+Premium user request to upload mouse button heatmap to website.
+
+Request tags:
+* `<client_token>`
+
+Response tags: *none*
+
+### Form field
+`buttons_heatmap` - JSON object in the format:
+```json
+{
+    "YYYY-mm-dd hh": {
+        "button": "count",
+        ...
+    },
+    ...
+}
+```
+where:
+* `YYYY-mm-dd hh` - timestamp of the hourly block of button counts
+  - `hh` - hour without padding, i.e. from `0` to `23`
+* `button` - mouse button code, likely from http://doc.qt.io/qt-4.8/qt.html#MouseButton-enum
+* `count` - count for button, *NB! JSON string*
 
 
 # Procedure

@@ -8,6 +8,11 @@ import converter
 import requests
 import json
 import sys
+import lockfile
+
+CONFIG_FILE = 'whatpulsed.conf'
+STATE_FILE = 'whatpulsed.json'
+LOCK_FILE = 'whatpulsed.pid'
 
 BYTE_BASE = 1024
 
@@ -38,13 +43,13 @@ def reset_stats():
 
 def setup():
 	global inputs, interfaces, keys, clicks, total_bytes, total_time
-	config_file = open('d.conf', 'r')
+	config_file = open(CONFIG_FILE, 'r')
 	config.read_file(config_file)
 
 	reset_stats()
 
 	try:
-		state_file = open('d.json', 'r')
+		state_file = open(STATE_FILE, 'r')
 		state = json.load(state_file)
 
 		# TODO: load more state to be sure
@@ -84,7 +89,7 @@ def start():
 	for input in inputs:
 		input = ReadInputDevice(input)
 		selector.register(input, selectors.EVENT_READ)
-	
+
 	# start interfaces
 	global prev_bytes
 	prev_bytes = get_bytes()
@@ -129,7 +134,7 @@ def autopulse():
 def main_loop():
 	# handle inputs
 	global keys, clicks
-	for key, mask in selector.select(1):
+	for key, mask in selector.select(1): # TODO: more efficient timeout
 		input = key.fileobj
 		for ev in input.read():
 			if ev.type == ecodes.EV_KEY:
@@ -169,7 +174,7 @@ def main_loop():
 	autopulse()
 
 def cleanup(signum, frame):
-	state_file = open('d.json', 'w')
+	state_file = open(STATE_FILE, 'w')
 	state = {
 		'login': {
 			'userid': wp.userid,
@@ -191,7 +196,7 @@ def cleanup(signum, frame):
 
 context = daemon.DaemonContext(
 	working_directory='.',
-	detach_process=False,
+	pidfile=lockfile.FileLock(LOCK_FILE),
 	stdout=stdout_file,
 	stderr=stderr_file
 )
@@ -207,4 +212,4 @@ with context:
 	start()
 	while True:
 		main_loop()
-	
+

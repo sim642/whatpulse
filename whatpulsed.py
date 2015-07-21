@@ -75,10 +75,14 @@ def setup():
 def get_bytes():
 	bytes = {}
 	for interface in interfaces:
-		bytes[interface] = {
-			'rx': int(open('/sys/class/net/' + interface + '/statistics/rx_bytes').read()),
-			'tx': int(open('/sys/class/net/' + interface + '/statistics/tx_bytes').read())
-		}
+		try:
+			bytes[interface] = {
+				'rx': int(open('/sys/class/net/' + interface + '/statistics/rx_bytes').read()),
+				'tx': int(open('/sys/class/net/' + interface + '/statistics/tx_bytes').read())
+			}
+		except FileNotFoundError: # interface not up
+			bytes[interface] = {'rx': 0, 'tx': 0}
+
 	return bytes
 
 def start():

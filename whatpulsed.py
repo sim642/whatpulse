@@ -33,6 +33,8 @@ prev_bytes = None
 total_time = None
 prev_time = None
 
+prev_save = None
+
 def reset_stats():
 	global keys, clicks, total_bytes, total_time
 	keys = 0
@@ -100,6 +102,9 @@ def start():
 	global prev_time
 	prev_time = time.time()
 
+	global prev_save
+	prev_save = time.time()
+
 def pulse(signum=None, frame=None):
 	stats = whatpulse.Stats(keys=keys, clicks=clicks, download=round(total_bytes['rx'] / pow(BYTE_BASE, 2)), upload=round(total_bytes['tx'] / pow(BYTE_BASE, 2)), uptime=round(total_time))
 
@@ -133,6 +138,35 @@ def autopulse():
 			pulse()
 			break
 
+def save_state():
+	state_file = open(STATE_FILE, 'w')
+	state = {
+		'login': {
+			'userid': wp.userid,
+			'computerid': wp.computerid,
+			'hash': wp.hash,
+			'token': wp.token
+		},
+		'stats': {
+			'keys': keys,
+			'clicks': clicks,
+			'download': total_bytes['rx'],
+			'upload': total_bytes['tx'],
+			'uptime': total_time
+		}
+	}
+	json.dump(state, state_file)
+
+def autostate():
+	try:
+		global prev_save
+		cur_save = time.time()
+
+		if prev_save + converter.time(config['state']['interval']) <= cur_save:
+			save_state()
+			prev_save = cur_save
+	except KeyError as e: # no interval specified
+		pass
 
 def main_loop():
 	# handle inputs
@@ -175,26 +209,10 @@ def main_loop():
 	prev_time = cur_time
 
 	autopulse()
+	autostate()
 
 def cleanup(signum, frame):
-	state_file = open(STATE_FILE, 'w')
-	state = {
-		'login': {
-			'userid': wp.userid,
-			'computerid': wp.computerid,
-			'hash': wp.hash,
-			'token': wp.token
-		},
-		'stats': {
-			'keys': keys,
-			'clicks': clicks,
-			'download': total_bytes['rx'],
-			'upload': total_bytes['tx'],
-			'uptime': total_time
-		}
-	}
-	json.dump(state, state_file)
-
+	save_state()
 	sys.exit(0)
 
 context = daemon.DaemonContext(

@@ -105,6 +105,8 @@ def start():
 	global prev_save
 	prev_save = time.time()
 
+	save_state()
+
 def pulse(signum=None, frame=None):
 	stats = whatpulse.Stats(keys=keys, clicks=clicks, download=round(total_bytes['rx'] / pow(BYTE_BASE, 2)), upload=round(total_bytes['tx'] / pow(BYTE_BASE, 2)), uptime=round(total_time))
 
@@ -233,4 +235,3 @@ with context:
 	start()
 	while True:
 		main_loop()
-

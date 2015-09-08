@@ -9,7 +9,7 @@ def make_converter(mags):
 		for cnt, c in re.findall(piece_re, str):
 			for i, mag in enumerate(mags):
 				if mag[0] == c:
-					cnts[i] = int(cnt)
+					cnts[i] += int(cnt)
 
 		val = 0
 		for mag, cnt in zip(mags, cnts):

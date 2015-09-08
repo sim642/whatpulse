@@ -27,22 +27,31 @@ This is the configuration file for whatpulsed. It is in **INI format** and has t
 
 Some values can be in converted format, allowing more human-readable values:
 * *(general)* - generic magnitude units
-    - `k` - kilo, equal to "1000"
-    - `m` - mega, equal to "1000k"
-    - `g` - giga, equal to "1000m"
-    - `t` - tera, equal to "1000g"
+    | unit | meaning | value |
+    | ---- | ------- | ----- |
+    | k    | kilo    | 1000  |
+    | m    | mega    | 1000k |
+    | g    | giga    | 1000m |
+    | t    | tera    | 1000g |
+    e.g. `1m500k` means "1.5 million"
 * *(size)* - base 2 magnitude units
-    - `k` - kibi, equal to "1024"
-    - `m` - mebi, equal to "1024k"
-    - `g` - gibi, equal to "1024m"
-    - `t` - tebi, equal to "1024g"
+    | unit | meaning | value |
+    | ---- | ------- | ----- |
+    | k    | kibi    | 1024  |
+    | m    | mebi    | 1024k |
+    | g    | gibi    | 1024m |
+    | t    | tebi    | 1024g |
+    e.g. `1g500m` means "1.5 gigabytes"
 * *(time)* - time magnitude units
-    - `s` - second, equal to "1"
-    - `m` - minute, equal to "60s"
-    - `h` - hour, equal to "60m"
-    - `d` - day, equal to "24h"
-    - `w` - week, equal to "7d"
-    - `y` - year, equal to "52w"
+    | unit | meaning | value |
+    | ---- | ------- | ----- |
+    | s    | second  | 1     |
+    | m    | minute  | 60s   |
+    | h    | hour    | 60m   |
+    | d    | day     | 24h   |
+    | w    | week    | 7d    |
+    | y    | year    | 52w   |
+    e.g. `3d7h10m` means "3 days, 7 hours and 10 minutes"
 
 ### whatpulsed.json
 

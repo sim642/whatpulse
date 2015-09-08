@@ -1,5 +1,23 @@
 # whatpulsed
 
+## Usage
+
+### First run
+
+1. Create "whatpulsed.conf":
+    * Write it based on the file description below  
+      or
+    * Copy and modify the example
+2. Run with `python3 whatpulsed.py`
+3. Wait for "whatpulsed.json" to be created
+4. *(optional)* Remove plaintext login details from "whatpulsed.conf" by deleting `login` section
+
+### Future runs
+
+1. Run with `python3 whatpulsed.py`
+2. Manually pulse by sending the process a `SIGUSR1`
+3. Gracefully stop whatpulsed by sending the process a `SIGTERM`
+
 ## Files
 
 ### whatpulsed.conf
@@ -67,20 +85,3 @@ This is the state file for whatpulsed and is not meant to be directly manipulate
     - `download`
     - `upload`
     - `upime`
-## Usage
-
-### First run
-
-1. Create "whatpulsed.conf":
-    * Write it based on the file description above  
-      or
-    * Copy and modify the example
-2. Run with `python3 whatpulsed.py`
-3. Wait for "whatpulsed.json" to be created
-4. *(optional)* Remove plaintext login details from "whatpulsed.conf" by deleting `login` section
-
-### Future runs
-
-1. Run with `python3 whatpulsed.py`
-2. Manually pulse by sending the process a `SIGUSR1`
-3. Gracefully stop whatpulsed by sending the process a `SIGTERM`

@@ -45,6 +45,7 @@ This is the configuration file for whatpulsed. It is in **INI format** and has t
 
 Some values can be in converted format, allowing more human-readable values:
 * *(general)* - generic magnitude units
+    
     | unit | meaning | value |
     | ---- | ------- | ----- |
     | k    | kilo    | 1000  |
@@ -53,6 +54,7 @@ Some values can be in converted format, allowing more human-readable values:
     | t    | tera    | 1000g |
     e.g. `1m500k` means "1.5 million"
 * *(size)* - base 2 magnitude units
+    
     | unit | meaning | value |
     | ---- | ------- | ----- |
     | k    | kibi    | 1024  |
@@ -61,6 +63,7 @@ Some values can be in converted format, allowing more human-readable values:
     | t    | tebi    | 1024g |
     e.g. `1g500m` means "1.5 gigabytes"
 * *(time)* - time magnitude units
+    
     | unit | meaning | value |
     | ---- | ------- | ----- |
     | s    | second  | 1     |

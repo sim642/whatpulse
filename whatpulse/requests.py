@@ -93,3 +93,8 @@ class PulseRequest(Request):
 		})
 		for elem in stats.dump():
 			self.tree.append(elem)
+
+__all__ = ["Request", "ProxyTestRequest", "TryLoginRequest", "LoginRequest",
+		   "ClientLoginRequest", "PasswordRequest", "ComputerIDRequest",
+		   "TokenResetRequest", "StatusRequest", "PremiumCheckRequest",
+		   "PulseRequest"]

@@ -140,3 +140,8 @@ Response.types = {
 	'check_premium': PremiumCheckResponse,
 	'pulse': PulseResponse
 }
+
+__all__ = ["Response", "ProxyTestResponse", "TryLoginResponse", "LoginResponse",
+		   "ClientLoginResponse", "PasswordResponse", "ComputerIDResponse",
+		   "TokenResetResponse", "StatusResponse", "PremiumCheckResponse",
+		   "PulseResponse"]

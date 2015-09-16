@@ -42,3 +42,5 @@ class Stats(object):
 			elem.text = str(getattr(self, key))
 			elems.append(elem)
 		return elems
+
+__all__ = ["Stats"]

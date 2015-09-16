@@ -35,3 +35,5 @@ class Session(object):
 
 	def request(self, req):
 		return self.requests([req])[0]
+
+__all__ = ["Session"]

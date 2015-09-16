@@ -86,3 +86,5 @@ class Client(object):
 		self.rank = res.rank
 
 		return res
+
+__all__ = ["Client"]

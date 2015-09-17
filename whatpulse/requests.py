@@ -1,4 +1,4 @@
-from .config import *
+from . import config
 from lxml import etree
 from lxml.builder import E
 
@@ -6,8 +6,8 @@ class Request(object):
 	def __init__(self, type):
 		self.tree = (
 			E.request({'type': type},
-				E.type_os(type_os),
-				E.client_version(client_version)
+				E.type_os(config.type_os),
+				E.client_version(config.client_version)
 			)
 		)
 

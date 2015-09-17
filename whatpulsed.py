@@ -1,13 +1,11 @@
-import daemon, signal
-import configparser, whatpulse
-from evdev import InputDevice, KeyEvent, ecodes
-import selectors
-import time
+import daemon, signal, lockfile # daemon
+import configparser, json # serialization
+import evdev, selectors # evdev
+import sys, time # utility
+import requests # exceptions
+
+import whatpulse
 import converter
-import requests
-import json
-import sys
-import lockfile
 
 CONFIG_FILE = 'whatpulsed.conf'
 STATE_FILE = 'whatpulsed.json'
@@ -92,7 +90,7 @@ def start():
 	global selector
 	selector = selectors.DefaultSelector()
 	for input in inputs:
-		input = InputDevice(input)
+		input = evdev.InputDevice(input)
 		selector.register(input, selectors.EVENT_READ)
 
 	# start interfaces
@@ -176,9 +174,9 @@ def main_loop():
 	for key, mask in selector.select(1): # TODO: more efficient timeout
 		input = key.fileobj
 		for ev in input.read():
-			if ev.type == ecodes.EV_KEY:
-				keyev = KeyEvent(ev) # turn into KeyEvent
-				if keyev.keystate == KeyEvent.key_up:
+			if ev.type == evdev.ecodes.EV_KEY:
+				keyev = evdev.KeyEvent(ev) # turn into KeyEvent
+				if keyev.keystate == evdev.KeyEvent.key_up:
 					if ev.code < 255: # arbitary limit
 						keys += 1
 					else:

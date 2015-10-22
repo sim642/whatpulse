@@ -46,6 +46,8 @@ Each `<response>` block comes with a `type` attribute. It always seems to also c
 
 In addition, there may be more tags specific to the response type being used. Details for every type are described below.
 
+*NB! Whatpulse API might return invalid XML (with missing closing tags) on errors. Beware of the fact when parsing API responses.*
+
 # Terminology
 The following section of types uses following tags repeatedly:
 * `<email>` - account email, used for initial login with `trylogin`

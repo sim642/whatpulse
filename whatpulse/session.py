@@ -11,8 +11,10 @@ class Session(object):
 
 	def requests(self, reqs):
 		requests = E.requests()
+		postdata = {}
 		for req in reqs:
 			requests.append(req.tree)
+			postdata.update(req.form)
 
 		tree = (
 			E.client(
@@ -22,7 +24,14 @@ class Session(object):
 
 		xml = etree.tostring(tree, encoding='UTF-8', xml_declaration=True) # declaration uses ' instead of "
 
-		r = self.s.post('https://client.whatpulse.org/v1.1/', verify='whatpulse.pem', data={'client_version': config.client_version, 'xml': xml})
+		globaldata = {
+			'client_version': config.client_version,
+			'xml': xml
+		}
+
+		postdata.update(globaldata)
+
+		r = self.s.post('https://client.whatpulse.org/v1.1/', verify='whatpulse.pem', data=postdata)
 		print(r.text)
 		tree = etree.fromstring(r.text)
 		ress = tree.xpath('/server/responses/response')

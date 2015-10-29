@@ -10,6 +10,7 @@ class Request(object):
 				E.client_version(config.client_version)
 			)
 		)
+		self.form = {}
 
 	def add_members(self, members):
 		for key, value in members.items():
@@ -94,7 +95,15 @@ class PulseRequest(Request):
 		for elem in stats.dump():
 			self.tree.append(elem)
 
+class UploadComputerinfoRequest(Request):
+	def __init__(self, client_token, computer_info):
+		super().__init__('upload_computerinfo')
+		self.add_members({
+			'client_token': client_token
+		})
+		self.form['computer_info'] = computer_info
+
 __all__ = ["Request", "ProxyTestRequest", "TryLoginRequest", "LoginRequest",
 		   "ClientLoginRequest", "PasswordRequest", "ComputerIDRequest",
 		   "TokenResetRequest", "StatusRequest", "PremiumCheckRequest",
-		   "PulseRequest"]
+		   "PulseRequest", "UploadComputerinfoRequest"]

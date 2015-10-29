@@ -3,10 +3,10 @@
     "TrackpadInfo": {},
     "NetworkInfo": {
         "isNetworkMonitorSupported": {
-            "isNetworkMonitorSupported": "true"
+            "isNetworkMonitorSupported": true
         },
         "SMSC LAN9512": {
-            "is_wifi": "false",
+            "is_wifi": false,
             "description": "SMSC LAN9512-jzx"
         }
     },
@@ -15,7 +15,7 @@
     "ComputerOS": "Debian",
     "ComputerPlatform": "ARM",
     "KeyboardInfo": {},
-    "MemoryInfo": "512",
+    "MemoryInfo": 512,
     "MonitorInfo": {},
     "MouseInfo": {}
 }

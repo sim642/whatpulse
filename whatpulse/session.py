@@ -5,6 +5,8 @@ from lxml import etree
 from lxml.builder import E
 
 class Session(object):
+	parser = etree.XMLParser(recover=True)
+
 	def __init__(self):
 		self.s = requests.Session()
 		self.s.headers.update({'User-Agent': 'WhatPulse Client ' + config.client_version})
@@ -33,7 +35,7 @@ class Session(object):
 
 		r = self.s.post('https://client.whatpulse.org/v1.1/', verify='whatpulse.pem', data=postdata)
 		print(r.text)
-		tree = etree.fromstring(r.text)
+		tree = etree.fromstring(r.text, self.parser)
 		ress = tree.xpath('/server/responses/response')
 
 		ret = []

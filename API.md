@@ -297,7 +297,7 @@ where the values are:
 * `ComputerOS` - operating system name
 * `ComputerPlatform` - computer platform identifier, ends with `\n`, usually `i686\n` or `x86_64\n`
 * `KeyboardInfo` - serialized JSON object in unknown format, usually `{}`
-* `MemoryInfo` - RAM amount in bytes
+* `MemoryInfo` - RAM amount in megabytes
 * `MonitorInfo` - serialized JSON object in the following format:
 
     ```json

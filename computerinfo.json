@@ -1,0 +1,21 @@
+{
+    "VideoInfo": "Broadcom VideoCore IV",
+    "TrackpadInfo": {},
+    "NetworkInfo": {
+        "isNetworkMonitorSupported": {
+            "isNetworkMonitorSupported": "true"
+        },
+        "SMSC LAN9512": {
+            "is_wifi": "false",
+            "description": "SMSC LAN9512-jzx"
+        }
+    },
+    "CPUInfo": "ARM1176JZF-S",
+    "ComputerModel": "Raspberry Pi B+",
+    "ComputerOS": "Debian",
+    "ComputerPlatform": "ARM",
+    "KeyboardInfo": {},
+    "MemoryInfo": "512",
+    "MonitorInfo": {},
+    "MouseInfo": {}
+}

@@ -280,7 +280,7 @@ where the values are:
         {
             "isNetworkMonitorSupported": "true"
         },
-        
+
         "Intel 82540EM Gigabit":
         {
             "is_wifi": "false",

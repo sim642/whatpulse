@@ -42,35 +42,35 @@ def reset_stats():
 
 def setup():
 	global inputs, interfaces, keys, clicks, total_bytes, total_time
-	config_file = open(CONFIG_FILE, 'r')
-	config.read_file(config_file)
+	with open(CONFIG_FILE, 'r') as config_file:
+		config.read_file(config_file)
 
-	reset_stats()
+		reset_stats()
 
-	try:
-		state_file = open(STATE_FILE, 'r')
-		state = json.load(state_file)
+		try:
+			with open(STATE_FILE, 'r') as state_file:
+				state = json.load(state_file)
 
-		# TODO: load more state to be sure
-		wp.userid = state['login']['userid']
-		wp.computerid = state['login']['computerid']
-		wp.hash = state['login']['hash']
-		wp.token = state['login']['token']
+				# TODO: load more state to be sure
+				wp.userid = state['login']['userid']
+				wp.computerid = state['login']['computerid']
+				wp.hash = state['login']['hash']
+				wp.token = state['login']['token']
 
-		wp.client_login()
-		wp.refresh()
+				wp.client_login()
+				wp.refresh()
 
-		keys = state['stats']['keys']
-		clicks = state['stats']['clicks']
-		total_bytes['rx'] = state['stats']['download']
-		total_bytes['tx'] = state['stats']['upload']
-		total_time = state['stats']['uptime']
-	except FileNotFoundError: # empty state
-		wp.try_login(config['login']['email'], config['login']['password'])
-		wp.login(config['login']['computer'])
+				keys = state['stats']['keys']
+				clicks = state['stats']['clicks']
+				total_bytes['rx'] = state['stats']['download']
+				total_bytes['tx'] = state['stats']['upload']
+				total_time = state['stats']['uptime']
+		except FileNotFoundError: # empty state
+			wp.try_login(config['login']['email'], config['login']['password'])
+			wp.login(config['login']['computer'])
 
-	inputs = list(config['inputs'])
-	interfaces = list(config['interfaces'])
+		inputs = list(config['inputs'])
+		interfaces = list(config['interfaces'])
 
 def get_bytes():
 	bytes = {}
@@ -139,23 +139,23 @@ def autopulse():
 			break
 
 def save_state():
-	state_file = open(STATE_FILE, 'w')
-	state = {
-		'login': {
-			'userid': wp.userid,
-			'computerid': wp.computerid,
-			'hash': wp.hash,
-			'token': wp.token
-		},
-		'stats': {
-			'keys': keys,
-			'clicks': clicks,
-			'download': total_bytes['rx'],
-			'upload': total_bytes['tx'],
-			'uptime': total_time
+	with open(STATE_FILE, 'w') as state_file:
+		state = {
+			'login': {
+				'userid': wp.userid,
+				'computerid': wp.computerid,
+				'hash': wp.hash,
+				'token': wp.token
+			},
+			'stats': {
+				'keys': keys,
+				'clicks': clicks,
+				'download': total_bytes['rx'],
+				'upload': total_bytes['tx'],
+				'uptime': total_time
+			}
 		}
-	}
-	json.dump(state, state_file)
+		json.dump(state, state_file)
 
 def autostate():
 	try:

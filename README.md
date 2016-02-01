@@ -19,7 +19,16 @@ This project consists of three parts:
 
 # whatpulsed
 
-This program is a replacement for WhatPulse client: it counts keys, clicks; measures download, upload, uptime and pulses that information manually or automatically. The idea is to provide pulsing features similar to the official client in a lightweight form, without the GUI and fancy visual statistics. Since whatpulsed is coded in Python 3 it can be run on platforms unsupported by the official client, e.g. headless systems and other architectures (e.g. ARM on Raspberry Pi).
+This program is a replacement for WhatPulse client: it counts keys, clicks; measures download, upload, uptime and pulses that information manually or automatically. The idea is to provide pulsing features similar to the official client in a lightweight form, without the GUI and fancy visual statistics. Since whatpulsed is coded in Python 3 it can be run on platforms unsupported by the official client, e.g. headless systems and other architectures (e.g. ARM on Raspberry Pi). Currently it only works on Linux.
+
+## Dependencies
+
+* [python-evdev](https://python-evdev.readthedocs.org/en/latest/) - used for input parsing from `/dev/input/event*`
+
+  Install with
+  ```
+  sudo pip install evdev
+  ```
 
 ## Usage
 

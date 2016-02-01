@@ -49,7 +49,7 @@ with open('computerinfo.json') as infofile:
     for key in serialize:
         j[key] = json.dumps(j[key])
 
-    j['ComputerPlatform'] += '\n';
+    j['ComputerPlatform'] += '\n'
 
     computer_info = json.dumps(j)
 

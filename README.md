@@ -1,3 +1,22 @@
+# whatpulse
+
+*WhatPulse reverse engineered*
+
+This project consists of three parts:
+
+1. Reverse engineering **WhatPulse Client API** protocol.
+
+   The reverse engineering has been done using [mitmproxy](https://mitmproxy.org/). The captures can be found in [caps](caps) directory. All results have been thoroughly documented in [API.md](API.md).
+
+2. Implementing the protocol as a **Python library**.
+
+   The implementation of the protocol in Python 3 can be found in [whatpulse](whatpulse) directory.
+
+3. Making a **replacement client** for WhatPulse using the library.
+
+   The replacement client is called "whatpulsed". An additional tool "upload_computerinfo" comes with it. Both are described below in more detail.
+
+
 # whatpulsed
 
 This program is a replacement for WhatPulse client: it counts keys, clicks; measures download, upload, uptime and pulses that information manually or automatically. The idea is to provide pulsing features similar to the official client in a lightweight form, without the GUI and fancy visual statistics. Since whatpulsed is coded in Python 3 it can be run on platforms unsupported by the official client, e.g. headless systems and other architectures (e.g. ARM on Raspberry Pi).

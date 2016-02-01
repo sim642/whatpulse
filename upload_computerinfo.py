@@ -1,10 +1,30 @@
+import configparser, json # serialization
 import whatpulse
-import json
+
+CONFIG_FILE = 'whatpulsed.conf'
+STATE_FILE = 'whatpulsed.json'
 
 wp = whatpulse.Client()
-wp.try_login('whattester@mailinator.com', 'whattester')
-wp.login('whatpulse3')
-wp.client_login()
+
+# copied from whatpulsed.py
+config = configparser.ConfigParser(allow_no_value=True)
+with open(CONFIG_FILE, 'r') as config_file:
+    config.read_file(config_file)
+
+    try:
+        with open(STATE_FILE, 'r') as state_file:
+            state = json.load(state_file)
+
+            # TODO: load more state to be sure
+            wp.userid = state['login']['userid']
+            wp.computerid = state['login']['computerid']
+            wp.hash = state['login']['hash']
+            wp.token = state['login']['token']
+    except FileNotFoundError: # empty state
+        wp.try_login(config['login']['email'], config['login']['password'])
+        wp.login(config['login']['computer'])
+
+    wp.client_login()
 
 def stringify(j):
     '''Turn all booleans and integers in JSON object into strings'''
@@ -33,6 +53,6 @@ with open('computerinfo.json') as infofile:
 
     computer_info = json.dumps(j)
 
-if computer_info:
+if wp.client_token and computer_info:
     req = whatpulse.requests.UploadComputerinfoRequest(wp.client_token, computer_info)
     wp.s.request(req)

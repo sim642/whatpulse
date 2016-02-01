@@ -14,7 +14,7 @@ This project consists of three parts:
 
 3. Making a **replacement client** for WhatPulse using the library.
 
-   The replacement client is called "whatpulsed". An additional tool "upload_computerinfo" comes with it. Both are described below in more detail.
+   The replacement client is called [whatpulsed](#whatpulsed). An additional tool [upload_computerinfo](#upload_computerinfo) comes with it. Both are described below in more detail.
 
 
 # whatpulsed
@@ -26,9 +26,9 @@ This program is a replacement for WhatPulse client: it counts keys, clicks; meas
 ### First run
 
 1. Create "whatpulsed.conf":
-    * Write it based on the file description below  
+    * Write it based on the [file description below](#whatpulsedconf)  
       or
-    * Copy and modify the example
+    * Copy and modify [the example](whatpulsed.conf)
 2. Run with `python3 whatpulsed.py`
 3. Wait for "whatpulsed.json" to be created
 4. *(optional)* Remove plaintext login details from "whatpulsed.conf" by deleting `login` section
@@ -117,20 +117,20 @@ This program allows uploading computer information (specs) to WhatPulse website 
 ## Usage
 
 1. Provide WhatPulse login details:
-    1. Have "whatpulsed.json" as the result of running whatpulsed  
+    1. Have "whatpulsed.json" as the [result of running whatpulsed](#first-run)  
        or
-    2. Create "whatpulsed.conf" as described above (only `login` section is required)
+    2. Create "whatpulsed.conf" as [described above](#whatpulsedconf) (only `login` section is required)
 2. Create "computerinfo.json":
-    * Write it based on the file description below  
+    * Write it based on the [file description below](#computerinfojson)  
       or
-    * Copy and modify the example
+    * Copy and modify [the example](computerinfo.json)
 3. Run with `python3 upload_computerinfo.py`
 
 ## Files
 
 ### computerinfo.json
 
-This is the computer info file for upload_computerinfo. It is in **JSON format** and is structured similarly to the JSON object used for upload_computerinfo request in the API:
+This is the computer info file for upload_computerinfo. It is in **JSON format** and is structured similarly to the JSON object used for [upload_computerinfo request in the API](API.md#upload_computerinfo):
 ```json
 {
     "VideoInfo": "NVIDIA GeForce GT 440",

@@ -1,5 +1,7 @@
 # whatpulsed
 
+This program is a replacement for WhatPulse client: it counts keys, clicks; measures download, upload, uptime and pulses that information manually or automatically. The idea is to provide pulsing features similar to the official client in a lightweight form, without the GUI and fancy visual statistics. Since whatpulsed is coded in Python 3 it can be run on platforms unsupported by the official client, e.g. headless systems and other architectures (e.g. ARM on Raspberry Pi).
+
 ## Usage
 
 ### First run
@@ -90,6 +92,8 @@ This is the state file for whatpulsed and is not meant to be directly manipulate
     - `upime`
 
 # upload_computerinfo
+
+This program allows uploading computer information (specs) to WhatPulse website for others to see without needing to install the official client. It allows manually specifying all supported information and uploading it via this simple script.
 
 ## Usage
 

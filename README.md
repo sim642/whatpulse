@@ -88,3 +88,105 @@ This is the state file for whatpulsed and is not meant to be directly manipulate
     - `download`
     - `upload`
     - `upime`
+
+# upload_computerinfo
+
+## Usage
+
+1. Provide WhatPulse login details:
+    1. Have "whatpulsed.json" as the result of running whatpulsed  
+       or
+    2. Create "whatpulsed.conf" as described above (only `login` section is required)
+2. Create "computerinfo.json":
+    * Write it based on the file description below  
+      or
+    * Copy and modify the example
+3. Run with `python3 upload_computerinfo.py`
+
+## Files
+
+### computerinfo.json
+
+This is the computer info file for upload_computerinfo. It is in **JSON format** and is structured similarly to the JSON object used for upload_computerinfo request in the API:
+```json
+{
+    "VideoInfo": "NVIDIA GeForce GT 440",
+    "TrackpadInfo": {},
+    "NetworkInfo":
+    {
+        "isNetworkMonitorSupported":
+        {
+            "isNetworkMonitorSupported": true
+        }
+    },
+    "CPUInfo": "Intel Core i5-2310",
+    "ComputerModel": "",
+    "ComputerOS": "Arch Linux",
+    "ComputerPlatform": "x86_64",
+    "KeyboardInfo": {},
+    "MemoryInfo": 5955,
+    "MonitorInfo":
+    {
+        "0":
+        {
+            "id": 0,
+            "width": 1920,
+            "height": 1080,
+        },
+        "1":
+        {
+            "id": 1,
+            "width": 1280,
+            "height": 1024,
+        }
+    },
+    "MouseInfo": {}
+}
+```
+where the values are:
+* `VideoInfo` - GPU name
+* `TrackpadInfo` - JSON object in unknown format, usually `{}`
+* `NetworkInfo` - JSON object in the following format:
+
+    ```json
+    {
+        "isNetworkMonitorSupported":
+        {
+            "isNetworkMonitorSupported": true
+        },
+
+        "Intel 82540EM Gigabit":
+        {
+            "is_wifi": false,
+            "description": "Intel 82540EM Gigabit"
+        },
+        ...
+    }
+    ```
+    where network cards as keys have values:
+    - `is_wifi` - network card Wi-Fi ability
+    - `description` - network card name, same as key
+* `CPUInfo` - CPU name
+* `ComputerModel` - computer model name, usually empty
+* `ComputerOS` - operating system name
+* `ComputerPlatform` - computer platform identifier, usually `i686` or `x86_64`
+* `KeyboardInfo` - JSON object in unknown format, usually `{}`
+* `MemoryInfo` - RAM amount in megabytes
+* `MonitorInfo` - JSON object in the following format:
+
+    ```json
+    {
+        "0":
+        {
+            "id": 0,
+            "width": 1920,
+            "height": 1080,
+        },
+        ...
+    }
+    ```
+    where monitor IDs as keys have values:
+    - `id` - monitor ID, same as key
+    - `width` - monitor width
+    - `height` - monitor height
+* `MouseInfo` - JSON object in unknown format, usually `{}`

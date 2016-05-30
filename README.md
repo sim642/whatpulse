@@ -22,12 +22,30 @@ This project consists of three parts:
 This program is a replacement for WhatPulse client: it counts keys, clicks; measures download, upload, uptime and pulses that information manually or automatically. The idea is to provide pulsing features similar to the official client in a lightweight form, without the GUI and fancy visual statistics. Since whatpulsed is coded in Python 3 it can be run on platforms unsupported by the official client, e.g. headless systems and other architectures (e.g. ARM on Raspberry Pi). Currently it only works on Linux.
 
 ## Dependencies
-
-* [python-evdev](https://python-evdev.readthedocs.org/en/latest/) - used for input parsing from `/dev/input/event*`
+* [python-daemon](https://pypi.python.org/pypi/python-daemon/) - used for running in the background
 
   Install with
   ```
-  sudo pip install evdev
+  sudo pip3 install python-daemon
+  ```
+  
+* [python-evdev](https://python-evdev.readthedocs.org/en/latest/) - used for parsing input from `/dev/input/event*`
+
+  Install with
+  ```
+  sudo pip3 install evdev
+  ```
+
+* [lxml](http://lxml.de/) - used for communicating with the XML API
+
+  Install with
+  ```
+  sudo apt-get install libxml2-dev libxslt1-dev
+  sudo pip3 install lxml
+  ```
+  or
+  ```
+  sudo apt-get install python3-lxml
   ```
 
 ## Usage

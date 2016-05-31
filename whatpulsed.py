@@ -69,8 +69,8 @@ def setup():
 			wp.try_login(config['login']['email'], config['login']['password'])
 			wp.login(config['login']['computer'])
 
-		inputs = list(config['inputs'])
-		interfaces = list(config['interfaces'])
+		inputs = list(config['inputs']) if config.has_section('inputs') else []
+		interfaces = list(config['interfaces']) if config.has_section('interfaces') else []
 
 def get_bytes():
 	bytes = {}

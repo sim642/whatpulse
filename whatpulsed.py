@@ -1,8 +1,8 @@
 import daemon, signal, lockfile # daemon
 import configparser, json # serialization
-import evdev, selectors # evdev
 import sys, time # utility
 import requests # exceptions
+# evdev, selectors - conditionally
 
 import whatpulse
 import converter
@@ -88,10 +88,14 @@ def get_bytes():
 def start():
 	# start inputs
 	global selector
-	selector = selectors.DefaultSelector()
-	for input in inputs:
-		input = evdev.InputDevice(input)
-		selector.register(input, selectors.EVENT_READ)
+	if inputs:
+		global evdev, selectors
+		import evdev, selectors # evdev
+
+		selector = selectors.DefaultSelector()
+		for input in inputs:
+			input = evdev.InputDevice(input)
+			selector.register(input, selectors.EVENT_READ)
 
 	# start interfaces
 	global prev_bytes
@@ -170,17 +174,20 @@ def autostate():
 
 def main_loop():
 	# handle inputs
-	global keys, clicks
-	for key, mask in selector.select(1): # TODO: more efficient timeout
-		input = key.fileobj
-		for ev in input.read():
-			if ev.type == evdev.ecodes.EV_KEY:
-				keyev = evdev.KeyEvent(ev) # turn into KeyEvent
-				if keyev.keystate == evdev.KeyEvent.key_up:
-					if ev.code < 255: # arbitary limit
-						keys += 1
-					else:
-						clicks += 1
+	if selector:
+		global keys, clicks
+		for key, mask in selector.select(1): # TODO: more efficient timeout
+			input = key.fileobj
+			for ev in input.read():
+				if ev.type == evdev.ecodes.EV_KEY:
+					keyev = evdev.KeyEvent(ev) # turn into KeyEvent
+					if keyev.keystate == evdev.KeyEvent.key_up:
+						if ev.code < 255: # arbitary limit
+							keys += 1
+						else:
+							clicks += 1
+	else:
+		time.sleep(5)
 
 	# handle interfaces
 	global prev_bytes, total_bytes

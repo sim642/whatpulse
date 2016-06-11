@@ -5,7 +5,7 @@ import requests # exceptions
 # evdev, selectors - conditionally
 
 import whatpulse
-import converter
+from . import converter
 
 CONFIG_FILE = 'whatpulsed.conf'
 STATE_FILE = 'whatpulsed.json'
@@ -222,21 +222,22 @@ def cleanup(signum, frame):
 	save_state()
 	sys.exit(0)
 
-context = daemon.DaemonContext(
-	working_directory='.',
-	pidfile=lockfile.FileLock(LOCK_FILE),
-	stdout=stdout_file,
-	stderr=stderr_file
-)
+def main():
+	context = daemon.DaemonContext(
+		working_directory='.',
+		pidfile=lockfile.FileLock(LOCK_FILE),
+		stdout=stdout_file,
+		stderr=stderr_file
+	)
 
-context.signal_map = {
-	signal.SIGTERM: cleanup,
-	signal.SIGHUP: 'terminate',
-	signal.SIGUSR1: pulse
-}
+	context.signal_map = {
+		signal.SIGTERM: cleanup,
+		signal.SIGHUP: 'terminate',
+		signal.SIGUSR1: pulse
+	}
 
-setup()
-with context:
-	start()
-	while True:
-		main_loop()
+	setup()
+	with context:
+		start()
+		while True:
+			main_loop()

@@ -3,6 +3,7 @@ from .responses import Response
 import requests
 from lxml import etree
 from lxml.builder import E
+import pkg_resources
 
 class Session(object):
 	parser = etree.XMLParser(recover=True)
@@ -33,7 +34,7 @@ class Session(object):
 
 		postdata.update(globaldata)
 
-		r = self.s.post('https://client.whatpulse.org/v1.1/', verify='whatpulse.pem', data=postdata)
+		r = self.s.post('https://client.whatpulse.org/v1.1/', verify=pkg_resources.resource_filename(__name__, 'whatpulse.pem'), data=postdata)
 		print(r.text)
 		tree = etree.fromstring(r.text, self.parser)
 		ress = tree.xpath('/server/responses/response')

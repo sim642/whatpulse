@@ -40,19 +40,20 @@ def stringify(j):
     else:
         return j
 
-computer_info = None
-with open('computerinfo.json') as infofile:
-    j = json.load(infofile)
-    j = stringify(j)
+def main():
+    computer_info = None
+    with open('computerinfo.json') as infofile:
+        j = json.load(infofile)
+        j = stringify(j)
 
-    serialize = ['TrackpadInfo', 'NetworkInfo', 'KeyboardInfo', 'MonitorInfo', 'MouseInfo']
-    for key in serialize:
-        j[key] = json.dumps(j[key])
+        serialize = ['TrackpadInfo', 'NetworkInfo', 'KeyboardInfo', 'MonitorInfo', 'MouseInfo']
+        for key in serialize:
+            j[key] = json.dumps(j[key])
 
-    j['ComputerPlatform'] += '\n'
+        j['ComputerPlatform'] += '\n'
 
-    computer_info = json.dumps(j)
+        computer_info = json.dumps(j)
 
-if wp.client_token and computer_info:
-    req = whatpulse.requests.UploadComputerinfoRequest(wp.client_token, computer_info)
-    wp.s.request(req)
+    if wp.client_token and computer_info:
+        req = whatpulse.requests.UploadComputerinfoRequest(wp.client_token, computer_info)
+        wp.s.request(req)

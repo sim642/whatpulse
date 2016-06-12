@@ -41,7 +41,7 @@ setup(
     entry_points={
         'console_scripts':[
             'whatpulsed=whatpulsed.whatpulsed:main',
-            'whatpulse_upload=whatpulsed.upload_computerinfo:main'
+            'whatpulse_computerinfo=whatpulsed.computerinfo:main'
         ]
     }
 )

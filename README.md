@@ -14,39 +14,30 @@ This project consists of three parts:
 
 3. Making a **replacement client** for WhatPulse using the library.
 
-   The replacement client is called [whatpulsed](#whatpulsed). An additional tool [upload_computerinfo](#upload_computerinfo) comes with it. Both are described below in more detail.
+   The replacement client is called [whatpulsed](#whatpulsed). An additional tool [whatpulse_computerinfo](#whatpulse_computerinfo) comes with it. Both are described below in more detail.
 
+
+# Setup
+
+## Dependencies
+
+Dependencies will be installed by `pip` automatically. Manual installation is only required in case of problems.
+
+* [python-daemon](https://pypi.python.org/pypi/python-daemon/) - used for running in the background
+* [python-evdev](https://python-evdev.readthedocs.org/en/latest/) - used for parsing input from `/dev/input/event*`
+* [lxml](http://lxml.de/) - used for communicating with the XML API
+* [requests](http://docs.python-requests.org/en/master/) - used for communicating with the API 
+
+## Installation
+
+Install from project directory (where "setup.py" is) with
+```
+sudo pip3 install .
+```
 
 # whatpulsed
 
 This program is a replacement for WhatPulse client: it counts keys, clicks; measures download, upload, uptime and pulses that information manually or automatically. The idea is to provide pulsing features similar to the official client in a lightweight form, without the GUI and fancy visual statistics. Since whatpulsed is coded in Python 3 it can be run on platforms unsupported by the official client, e.g. headless systems and other architectures (e.g. ARM on Raspberry Pi). Currently it only works on Linux.
-
-## Dependencies
-* [python-daemon](https://pypi.python.org/pypi/python-daemon/) - used for running in the background
-
-  Install with
-  ```
-  sudo pip3 install python-daemon
-  ```
-  
-* [python-evdev](https://python-evdev.readthedocs.org/en/latest/) - used for parsing input from `/dev/input/event*`
-
-  Install with
-  ```
-  sudo pip3 install evdev
-  ```
-
-* [lxml](http://lxml.de/) - used for communicating with the XML API
-
-  Install with
-  ```
-  sudo apt-get install libxml2-dev libxslt1-dev
-  sudo pip3 install lxml
-  ```
-  or
-  ```
-  sudo apt-get install python3-lxml
-  ```
 
 ## Usage
 
@@ -56,15 +47,15 @@ This program is a replacement for WhatPulse client: it counts keys, clicks; meas
     * Write it based on the [file description below](#whatpulsedconf)  
       or
     * Copy and modify [the example](whatpulsed.conf)
-2. Run with `python3 whatpulsed.py`
+2. Run with `whatpulsed` in the same directory as "whatpulsed.conf"
 3. Wait for "whatpulsed.json" to be created
 4. *(optional)* Remove plaintext login details from "whatpulsed.conf" by deleting `login` section
 
 ### Future runs
 
-1. Run with `python3 whatpulsed.py`
-2. Manually pulse by sending the process a `SIGUSR1`
-3. Gracefully stop whatpulsed by sending the process a `SIGTERM`
+1. Run with `whatpulsed` in the same directory as "whatpulsed.json"
+2. Manually pulse by sending the process a `SIGUSR1`, e.g. `pkill -USR1 whatpulsed`
+3. Gracefully stop whatpulsed by sending the process a `SIGTERM`, e.g. `pkill whatpulsed`
 
 ## Files
 
@@ -137,7 +128,7 @@ This is the state file for whatpulsed and is not meant to be directly manipulate
     - `upload`
     - `upime`
 
-# upload_computerinfo
+# whatpulse_computerinfo
 
 This program allows uploading computer information (specs) to WhatPulse website for others to see without needing to install the official client. It allows manually specifying all supported information and uploading it via this simple script.
 
@@ -151,7 +142,7 @@ This program allows uploading computer information (specs) to WhatPulse website 
     * Write it based on the [file description below](#computerinfojson)  
       or
     * Copy and modify [the example](computerinfo.json)
-3. Run with `python3 upload_computerinfo.py`
+3. Run with `whatpulse_computerinfo` in the same directory as "whatpulsed.json"/"whatpulsed.conf" and "computerinfo.json"
 
 ## Files
 

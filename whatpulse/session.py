@@ -6,11 +6,15 @@ from lxml.builder import E
 import pkg_resources
 
 class Session(object):
+	headers = {
+		'User-Agent': 'WhatPulse Client ' + config.client_version,
+		'Accept': None # remove because server gets confused about */*
+	}
 	parser = etree.XMLParser(recover=True)
 
 	def __init__(self):
 		self.s = requests.Session()
-		self.s.headers.update({'User-Agent': 'WhatPulse Client ' + config.client_version})
+		self.s.headers.update(self.headers)
 
 	def requests(self, reqs):
 		requests = E.requests()

@@ -30,6 +30,7 @@ class Session(object):
 		)
 
 		xml = etree.tostring(tree, encoding='UTF-8', xml_declaration=True) # declaration uses ' instead of "
+		print("-->", xml.decode("utf-8"))
 
 		globaldata = {
 			'client_version': config.client_version,
@@ -39,7 +40,7 @@ class Session(object):
 		postdata.update(globaldata)
 
 		r = self.s.post('https://client.whatpulse.org/v1.1/', verify=pkg_resources.resource_filename(__name__, 'whatpulse.pem'), data=postdata)
-		print(r.text)
+		print("<--", r.text)
 		tree = etree.fromstring(r.text, self.parser)
 		ress = tree.xpath('/server/responses/response')
 

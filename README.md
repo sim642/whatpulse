@@ -17,6 +17,22 @@ This project consists of three parts:
    The replacement client is called [whatpulsed](#whatpulsed). An additional tool [whatpulse_computerinfo](#whatpulse_computerinfo) comes with it. Both are described below in more detail.
 
 
+# Disclaimer
+
+**WhatPulse officially forbids the use of any unofficial clients, including the Python library and the replacement client provided here. Use them at your own risk, being fully aware that your WhatPulse account may be suspended for doing so.**
+
+There are known cases of WhatPulse accounts being suspended for using the client software provided here. Given library attempts to imitate the official client as closely as possible to be undetectable but no such guarantee is given. Beware that mentioning your use of software provided here (e.g. in the issues of this repository) may also lead to suspension.
+
+#### Sources
+
+[WhatPulse Terms of Service](https://whatpulse.org/pages/tos):
+> As a condition for use of the Website and Services, you agree not to use the Website or Services for the following
+> 7. To fake statistics with the intention of achieving higher ranks or other rewards.
+
+[WhatPulse Knowledge Base - Are there any rules?](http://help.whatpulse.org/kb/general/are-there-any-rules):
+> You are also not allowed to use any external programs to generate fake statistics. Detection of this will get your account (and statistics) removed. Only the official WhatPulse clients are allowed for statistics generation.
+
+
 # Setup
 
 ## Dependencies

@@ -62,7 +62,7 @@ This program is a replacement for WhatPulse client: it counts keys, clicks; meas
 1. Create "whatpulsed.conf":
     * Write it based on the [file description below](#whatpulsedconf)  
       or
-    * Copy and modify [the example](whatpulsed.conf)
+    * Copy and modify [the example](example/whatpulsed.conf)
 2. Run with `whatpulsed` in the same directory as "whatpulsed.conf"
 3. Wait for "whatpulsed.json" to be created
 4. *(optional)* Remove plaintext login details from "whatpulsed.conf" by deleting `login` section

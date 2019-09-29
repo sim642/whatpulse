@@ -157,7 +157,7 @@ This program allows uploading computer information (specs) to WhatPulse website 
 2. Create "computerinfo.json":
     * Write it based on the [file description below](#computerinfojson)  
       or
-    * Copy and modify [the example](computerinfo.json)
+    * Copy and modify [the example](example/computerinfo.json)
 3. Run with `whatpulse_computerinfo` in the same directory as "whatpulsed.json"/"whatpulsed.conf" and "computerinfo.json"
 
 ## Files
